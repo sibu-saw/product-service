@@ -16,6 +16,7 @@ public class Product {
 	private String name;
 	private String description;
 	private double price;
+	private String skuCode;
 	
 	public int getProductId() {
 		return productId;
@@ -41,5 +42,10 @@ public class Product {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+	public String getSkuCode() {
+		return skuCode;
+	}
+	public void setSkuCode(String skuCode) {
+		this.skuCode = skuCode;
+	}
 }

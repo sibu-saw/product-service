@@ -3,6 +3,7 @@ package com.sailotech.productservice.business;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,21 +22,27 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository prodRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	public List<ProductDto> getAll() {
-		return prodRepository.findAll().stream().map(this::mapToProductDto).toList();
+		return prodRepository.findAll().stream()
+				.map(prod -> modelMapper.map(prod, ProductDto.class))
+				.toList();
 	}
 
 	public Optional<ProductDto> getByProductId(int productId) {
 		Optional<Product> product = prodRepository.findById(productId);
-		return Optional.of(mapToProductDto(product.get()));
+		return Optional.of(modelMapper.map(product.get(), ProductDto.class));
 	}
 
 	public int addProduct(ProductDto productDto) {
-		Product newProduct = prodRepository.save(this.mapToProduct(productDto));
+		Product newProduct = prodRepository.save(modelMapper.map(productDto, Product.class));
 		return newProduct.getProductId();
 	}
-
+	
+	/*
 	private ProductDto mapToProductDto(Product product) {
 
 		if (product == null)
@@ -61,5 +68,6 @@ public class ProductService {
 		
 		return product;
 	}
-
+	
+	*/
 }
